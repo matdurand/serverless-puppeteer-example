@@ -1,0 +1,84 @@
+{
+  "name": "serverless-puppeteer-example",
+  "version": "1.0.0",
+  "description": "Example serverless functions using the Serverless-framework and puppeteer",
+  "main": "src/handlers.js",
+  "engines": {
+    "node": ">= 8.10.0"
+  },
+  "config": {
+    "jsSrc": "src/",
+    "chromiumChannel": "dev",
+    "chromium_channel": "dev"
+  },
+  "scripts": {
+    "test": "npm run lint && npm run ava",
+    "watch:test": "ava --watch",
+    "ava": "ava",
+    "lint": "npm run lint:eslint -s",
+    "lint:eslint": "eslint $npm_package_config_jsSrc",
+    "deploy": "serverless deploy -v --aws-profile serverless",
+    "upgrade-dependencies": "yarn upgrade-interactive --latest --exact"
+  },
+  "keywords": [
+    "serverless",
+    "chrome",
+    "chromium",
+    "headless",
+    "aws",
+    "lambda",
+    "serverless-framework",
+    "screenshot",
+    "screen capture",
+    "pdf"
+  ],
+  "author": "Mathieu Durand",
+  "license": "MIT",
+  "dependencies": {
+    "@serverless-chrome/lambda": "1.0.0-54",
+    "puppeteer": "1.7.0",
+    "superagent": "3.8.3"
+  },
+  "devDependencies": {
+    "ava": "0.23.0",
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.2",
+    "babel-plugin-transform-object-entries": "1.0.0",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-stage-3": "6.24.1",
+    "babel-register": "6.26.0",
+    "serverless": "1.30.1",
+    "serverless-plugin-chrome": "1.0.0-54",
+    "serverless-webpack": "5.2.0",
+    "string-replace-loader": "^2.1.1",
+    "webpack": "4.16.5"
+  },
+  "ava": {
+    "require": "babel-register",
+    "babel": "inherits"
+  },
+  "babel": {
+    "sourceMaps": true,
+    "presets": [
+      [
+        "env",
+        {
+          "modules": "commonjs",
+          "targets": {
+            "node": "8.10"
+          },
+          "include": [
+            "es7.object.values",
+            "es7.object.entries"
+          ]
+        }
+      ],
+      "stage-3"
+    ],
+    "plugins": [
+      "transform-object-rest-spread",
+      "transform-object-entries"
+    ]
+  }
+}

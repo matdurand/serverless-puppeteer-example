@@ -1,0 +1,53 @@
+service: aws
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  profile: serverless
+  stage: dev
+  region: us-east-1
+  environment:
+    # DEBUG: "*"
+    PAGE_LOAD_TIMEOUT: "30000"
+    LOGGING: "true"
+
+plugins:
+  - serverless-plugin-chrome
+  - serverless-webpack
+
+package:
+  exclude:
+    - node_modules/puppeteer/.local-chromium/** # exclude puppeteer chrome if exists
+
+custom:
+  chrome:
+    flags:
+      - --window-size=1280,1696 # Letter size
+      - --hide-scrollbars
+
+functions:
+  screenshot:
+    description: Headless Chrome Serverless-framework screenshot example
+    memorySize: 1536
+    timeout: 30
+    handler: src/handlers/screenshot.default
+    events:
+      - http:
+          path: screenshot
+          method: get
+
+resources:
+  Resources:
+    ApiGatewayRestApi:
+      Properties:
+        BinaryMediaTypes:
+          - "*/*"
+    # Enable X-Ray tracing on Lambda functions
+    # ScreenshotLambdaFunction:
+    #   Properties:
+    #     TracingConfig:
+    #       Mode: Active
+    # PdfLambdaFunction:
+    #   Properties:
+    #     TracingConfig:
+    #       Mode: Active
